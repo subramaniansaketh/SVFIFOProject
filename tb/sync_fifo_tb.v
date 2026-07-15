@@ -18,6 +18,8 @@ always #5 clk = ~clk;
 
 integer i;
 integer j;
+integer k;
+integer l;
 
 initial begin
     $dumpfile("fifo.vcd");
@@ -37,19 +39,39 @@ initial begin
         write_enable = 1;
         #10;
     end
-    
+
+    #10;
     write_enable = 0;
     $display("full = %d", full == 1);
 
-    for (j = 0; j < DEPTH; j = j + 1) begin
-        read_enable = 1;
+    for (j = 0; j < DEPTH; j = j + 1) begin 
         #10;
+        read_enable = 1;
         $display("Read value: %d", read_data);
     end
     
+    #10;
     read_enable = 0;
     $display("empty = %d", empty == 1);
 
+    for (k = 0; k < (DEPTH / 4); k = k + 1) begin
+        #10;
+        write_enable = 1;
+        read_enable = 0;
+        write_data = k;
+    end
+    
+
+    for (l = 0; l < (DEPTH / 4); l = l + 1) begin
+        #10;
+        write_enable = 1;
+        write_data = l;
+        read_enable = 1;
+        $display("Read value: %d", read_data);
+    end
+
+    write_enable = 0;
+    read_enable = 0;
 
     #100;
     $finish;
