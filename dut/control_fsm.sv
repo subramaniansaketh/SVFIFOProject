@@ -1,21 +1,18 @@
 module control_fsm (
-                        input clk,
-                        input reset,
-                        input empty,
-                        output reg read_enable,
-                        output reg capture_enable,
-                        output reg result_valid
+                        input logic clk,
+                        input logic reset,
+                        input logic empty,
+                        output logic read_enable,
+                        output logic capture_enable,
+                        output logic result_valid
                    );
+
+        typedef enum logic [1:0] {IDLE, POP, EXEC, DONE} state_t;
         
-        parameter IDLE = 0,
-                  POP = 1,
-                  EXEC = 2,
-                  DONE = 3;
-        
-        reg [1:0] curr_state, next_state;
+        state_t curr_state, next_state;
 
         // Sequential next-state logic
-        always @(posedge clk) begin
+        always_ff @(posedge clk) begin
             if (reset) begin
                 curr_state <= IDLE;
             end
@@ -24,7 +21,7 @@ module control_fsm (
             end
         end
 
-        always @(*) begin
+        always_comb begin
             read_enable = 0;
             capture_enable = 0;
             result_valid = 0;

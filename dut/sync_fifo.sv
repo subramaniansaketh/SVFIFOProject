@@ -1,21 +1,21 @@
 module sync_fifo #(parameter W = 8, parameter DEPTH = 16)
                   (
-                    input clk,
-                    input reset, 
-                    input write_enable,
-                    input [(2 * W + 4) - 1 : 0] write_data, // data to be written
-                    input read_enable,
-                    output [(2 * W + 4) - 1: 0] read_data, // data to be read in
-                    output full,
-                    output empty
+                    input logic clk,
+                    input logic reset, 
+                    input logic write_enable,
+                    input logic [(2 * W + 4) - 1 : 0] write_data, // data to be written
+                    input logic read_enable,
+                    output logic [(2 * W + 4) - 1: 0] read_data, // data to be read in
+                    output logic full,
+                    output logic empty
                   );
 
-        reg [$clog2(DEPTH): 0] write_pointer;
-        reg [$clog2(DEPTH): 0] read_pointer;
+        logic [$clog2(DEPTH): 0] write_pointer;
+        logic [$clog2(DEPTH): 0] read_pointer;
 
-        reg [(2 * W + 4) - 1: 0] fifo [DEPTH - 1: 0];
+        logic [(2 * W + 4) - 1: 0] fifo [DEPTH - 1: 0];
 
-        always @(posedge clk) begin
+        always_ff @(posedge clk) begin
           if (reset) begin
             write_pointer <= 0;
           end
@@ -27,7 +27,7 @@ module sync_fifo #(parameter W = 8, parameter DEPTH = 16)
           end
         end
 
-        always @(posedge clk) begin
+        always_ff @(posedge clk) begin
           if (reset) begin
             read_pointer <= 0;
           end

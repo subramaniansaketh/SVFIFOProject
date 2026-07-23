@@ -2,18 +2,18 @@ module dut_tb;
 
 localparam WIDTH = 8;
 
-reg clk,
+logic clk,
     reset,
     write_enable;
-reg [(2 * WIDTH + 4) - 1 : 0] write_data;
+logic[(2 * WIDTH + 4) - 1 : 0] write_data;
 
-wire full;
-wire [WIDTH - 1: 0] result;
-wire carry_out,
+logic full;
+logic [WIDTH - 1: 0] result;
+logic carry_out,
      zero,
      negative;
-wire [2:0] cmp_out;
-wire result_valid;
+logic [2:0] cmp_out;
+logic result_valid;
 
 fifo_alu_dut d0 (
                     .clk(clk), .reset(reset),
@@ -23,8 +23,6 @@ fifo_alu_dut d0 (
                     .cmp_out(cmp_out), .result_valid(result_valid),
                     .carry_out(carry_out)
                  );
-
-integer i;
 
 always #5 clk = ~clk;
 
@@ -47,7 +45,7 @@ initial begin
     @(posedge result_valid) begin
         $display("Result = %d | Zero: %d | COut: %d | Negative: %d", result, zero, carry_out, negative);
     end
-    @(negedge result_valid)
+    @(negedge result_valid);
     #20;
 
     write_enable = 1;
@@ -57,7 +55,7 @@ initial begin
     @(posedge result_valid) begin
         $display("Result = %d | Zero: %d | COut: %d | Negative: %d", result, zero, carry_out, negative);
     end
-    @(negedge result_valid)
+    @(negedge result_valid);
     #20;
 
     write_enable = 1;
@@ -67,7 +65,7 @@ initial begin
     @(posedge result_valid) begin    
         $display("Result = %d | Zero: %d | Negative: %d", result, zero, negative);
     end
-    @(negedge result_valid)
+    @(negedge result_valid);
     #20;
 
     write_enable = 1;
@@ -77,7 +75,7 @@ initial begin
     @(posedge result_valid) begin
         $display("GT = %d | EQ: %d | LT: %d", cmp_out[0], cmp_out[1], cmp_out[2]);
     end
-    @(negedge result_valid)
+    @(negedge result_valid);
     #20;
 
     write_enable = 1;
@@ -87,7 +85,7 @@ initial begin
     @(posedge result_valid) begin
         $display("Set bits = %d", result);
     end
-    @(negedge result_valid)
+    @(negedge result_valid);
     #20;
 
     reset = 0;
