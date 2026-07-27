@@ -12,8 +12,8 @@ class cmd_transaction #(int WIDTH = 8);
 
     constraint valid_opcode {this.opcode inside {[4'b0000:4'b1001]};}
     constraint operand_corners {
-    a dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
-    b dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
+        a dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
+        b dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
     }
 
     function new();
