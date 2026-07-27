@@ -1,14 +1,20 @@
 class cmd_transaction #(int WIDTH = 8);
     // What goes into the DUT
-    logic [3:0] opcode;
-    logic [WIDTH - 1: 0] a;
-    logic [WIDTH - 1: 0] b;
+    rand logic [3:0] opcode;
+    rand logic [WIDTH - 1: 0] a;
+    rand logic [WIDTH - 1: 0] b;
     // Outputs
     logic [WIDTH - 1: 0] exp_result;
     logic exp_carry_out;
     logic exp_zero;
     logic exp_negative;
     logic [2:0] exp_cmp_out; // {lt, eq, gt}
+
+    constraint valid_opcode {this.opcode inside {[4'b0000:4'b1001]};}
+    constraint operand_corners {
+    a dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
+    b dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
+    }
 
     function new();
         this.opcode = 0;
