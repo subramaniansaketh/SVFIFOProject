@@ -25,10 +25,10 @@ interface dut_if #(parameter WIDTH = 8) (input logic clk);
     );
 
     modport TB (clocking tb_cb);
-    (
-        input full, result, carry_out, zero, negative, 
-        cmp_out, result_valid,
-        output reset, write_enable, write_data
-    );
+
+    assert property (@(posedge clk) result_valid |-> ##1 !result_valid)
+        else $display("Result valid must only pulse for one cycle!");
+    assert property (@(posedge clk) full & write_enable |-> !result_valid)
+        else $display("Result valid mustn't fire spuriously");
 
 endinterface
