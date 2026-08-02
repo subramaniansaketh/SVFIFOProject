@@ -1,3 +1,5 @@
+import tb_pkg::*;
+
 module dut_tb;
     logic clk;
 
@@ -20,7 +22,9 @@ module dut_tb;
 
         env1.run();
         repeat (env1.g1.num_transactions * 10) @(bus.tb_cb);
+
         env1.s1.report();
+
         $finish;
 
     end

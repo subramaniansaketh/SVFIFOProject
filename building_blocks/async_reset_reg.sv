@@ -1,11 +1,11 @@
 module param_register #(parameter WIDTH = 8)
-                        (input clk, 
-                        input rstn, 
-                        input enable, 
-                        input [WIDTH - 1: 0] d, 
-                        output reg [WIDTH - 1: 0] q);
+                        (input logic clk, 
+                        input logic rstn, 
+                        input logic enable, 
+                        input logic [WIDTH - 1: 0] d, 
+                        output logic [WIDTH - 1: 0] q);
                 
-                always @(posedge clk or negedge rstn) begin
+                always_ff @(posedge clk or negedge rstn) begin
                     if (!rstn) begin
                         q <= 0;
                     end

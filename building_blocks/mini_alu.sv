@@ -1,13 +1,13 @@
 module mini_ALU #(parameter WIDTH = 8)
                  (
-                    input [WIDTH - 1: 0] a, 
-                    input [WIDTH - 1: 0] b,
-                    input [2:0] op, 
-                    output reg [WIDTH - 1: 0] result, 
-                    output zero
+                    input logic [WIDTH - 1: 0] a, 
+                    input logic [WIDTH - 1: 0] b,
+                    input logic [2:0] op, 
+                    output logic [WIDTH - 1: 0] result, 
+                    output logic zero
                  );
         
-        always @(*) begin
+        always_comb begin
             case (op)
                 3'b000: begin
                     result = a + b;
