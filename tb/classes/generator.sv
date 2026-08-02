@@ -1,5 +1,3 @@
-typedef mailbox #(cmd_transaction) cmd_mbx;
-
 class generator;
     cmd_mbx drv_mail; // driver mailbox
     cmd_mbx exp_mail; // scoreboard mailbox

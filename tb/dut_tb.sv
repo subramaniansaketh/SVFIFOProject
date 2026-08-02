@@ -1,91 +1,27 @@
-import tb_pkg::*;
-
 module dut_tb;
+    logic clk;
 
-logic clk;
+    dut_if.TB bus (.clk(clk));
+    fifo_alu_dut d1 (.bus(bus));
 
-dut_if.TB bus (.clk(clk));
-fifo_alu_dut d0 (.bus(bus));
+    always #5 clk = ~clk;
+    initial clk = 0;
 
-always #5 clk = ~clk;
+    initial begin
+        $dumpfile("dut_tb.vcd");
+        $dumpvars(0, dut_tb);
 
-initial begin
-    $dumpfile("dut.vcd");
-    $dumpvars(0, dut_tb);
+        env env1 = new(bus);
+        bus.reset = 1;
 
-    bus.clk = 0;
-    bus.reset = 1;
-    bus.write_enable = 0;
-    bus.write_data = 0;
+        repeat(2) @(bus.tb_cb);
 
-    @(bus.tb_cb);
-    bus.reset = 0; 
+        bus.reset = 0;
 
-    bus.tb_cb.write_enable <= 1;
-    bus.tb_cb.bus.write_data <= {4'b0000, 8'b00110011, 8'b01010010};
-    @(bus.tb_cb);
-    bus.tb_cb.write_enable <= 0;
-    @(posedge bus.result_valid) begin
-        $display("Result = %d | Zero: %d | COut: %d | Negative: %d", bus.result, bus.zero, bus.carry_out, bus.negative);
+        env1.run();
+        repeat (env1.g1.num_transactions * 10) @(bus.tb_cb);
+        env1.s1.report();
+        $finish;
+
     end
-    @(negedge bus.result_valid);
-
-    @(bus.tb_cb);
-    @(bus.tb_cb);
-
-
-    bus.tb_cb.write_enable <= 1;
-    bus.tb_cb.write_data <= {4'b0001, 8'b01110011, 8'b01010010};
-    @(bus.tb_cb);
-    bus.tb_cb.write_enable <= 0;
-    @(posedge bus.result_valid) begin
-        $display("Result = %d | Zero: %d | COut: %d | Negative: %d", bus.result, bus.zero, bus.carry_out, bus.negative);
-    end
-    @(negedge bus.result_valid);
-    
-    @(bus.tb_cb);
-    @(bus.tb_cb);
-
-    bus.tb_cb.write_enable <= 1;
-    bus.tb_cb.write_data <= {4'b0010, 8'b01110011, 8'b01010010};
-    @(bus.tb_cb);
-    bus.tb_cb.write_enable <= 0;
-    @(posedge bus.result_valid) begin    
-        $display("Result = %d | Zero: %d | Negative: %d", bus.result, bus.zero, bus.negative);
-    end
-    @(negedge bus.result_valid);
-    
-    @(bus.tb_cb);
-    @(bus.tb_cb);
-
-    bus.tb_cb.write_enable <= 1;
-    bus.tb_cb.write_data = {4'b1000, 8'b01110011, 8'b01010010};
-    @(bus.tb_cb);
-    bus.write_enable <= 0;
-    @(posedge bus.result_valid) begin
-        $display("GT = %d | EQ: %d | LT: %d", bus.cmp_out[0], bus.cmp_out[1], bus.cmp_out[2]);
-    end
-    @(negedge bus.result_valid);
-    
-    @(bus.tb_cb);
-    @(bus.tb_cb);
-
-    bus.tb_cb.write_enable <= 1;
-    bus.tb_cb.write_data <= {4'b1001, 8'b01110011, 8'b01010010};
-    @(bus.tb_cb);
-    bus.tb_cb.write_enable <= 0;
-    @(posedge bus.result_valid) begin
-        $display("Set bits = %d", bus.result);
-    end
-    @(negedge bus.result_valid);
-    
-    @(bus.tb_cb);
-    @(bus.tb_cb);
-
-    bus.reset = 0;
-    
-    $finish;
-
-end
-
 endmodule

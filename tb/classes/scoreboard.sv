@@ -1,5 +1,3 @@
-typedef mailbox #(cmd_transaction) cmd_mbx;
-
 class scoreboard;
     cmd_mbx exp_mbx;
     cmd_mbx act_mbx;

@@ -1,5 +1,3 @@
-typedef mailbox #(cmd_transaction) cmd_mbx;
-
 class driver;
     virtual dut_if.TB vif;
     cmd_mbx mail;
