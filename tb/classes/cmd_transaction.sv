@@ -86,13 +86,12 @@ class cmd_transaction #(int WIDTH = 8);
         $display("OPCODE: %b, a = %b, b = %b | exp_result = %b, zero = %b, carry = %b, negative = %b, cmp (LT, EQ, GT): %b", this.opcode, this.a, this.b, this.exp_result, this.exp_zero, this.exp_carry_out, this.exp_negative, this.exp_cmp_out);
     endfunction
 
-    function bit compare (logic [WIDTH - 1: 0] actual_result, logic actual_carry, logic actual_zero, 
-    logic actual_negative, logic [2:0] actual_cmp);
+    function bit compare (cmd_transaction act_trans);
         bit pass;
 
-        if (actual_result == exp_result && actual_carry == exp_carry_out && 
-        actual_zero == exp_zero && actual_negative == exp_negative && 
-        actual_cmp == exp_cmp_out) begin
+        if (act_trans.exp_result == exp_result && act_trans.exp_carry_out == exp_carry_out && 
+        act_trans.exp_zero == exp_zero && act_trans.exp_negative == exp_negative && 
+        act_trans.exp_cmp_out == exp_cmp_out) begin
             pass = 1'b1;
             $display("PASS");
         end

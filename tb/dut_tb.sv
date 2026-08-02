@@ -1,3 +1,5 @@
+import tb_pkg::*;
+
 module dut_tb;
 
 logic clk;
@@ -32,7 +34,7 @@ initial begin
     @(bus.tb_cb);
 
 
-    bus.tb_cbwrite_enable <= 1;
+    bus.tb_cb.write_enable <= 1;
     bus.tb_cb.write_data <= {4'b0001, 8'b01110011, 8'b01010010};
     @(bus.tb_cb);
     bus.tb_cb.write_enable <= 0;
