@@ -10,7 +10,7 @@ class generator;
     endfunction
 
     task run();
-        cmd_transaction #() cmd1;
+        cmd_transaction cmd1;
         for (int i = 0; i < num_transactions; i++) begin
             cmd1 = new();
             assert (cmd1.randomize());

@@ -31,7 +31,7 @@ class scoreboard;
         end
     endtask
 
-    function report();
+    function void report();
         $display("SCOREBOARD STATS: Tests ran = %d | Passed = %d | Failed = %d", (pass_count + fail_count), pass_count, fail_count);
     endfunction
 endclass

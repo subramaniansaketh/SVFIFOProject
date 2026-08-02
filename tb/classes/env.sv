@@ -10,11 +10,10 @@ class env;
 
     function new(virtual dut_if.TB vif);
         this.vif = vif;
-        gen_mbx = new();
+        act_mbx = new();
         drive_mbx = new();
-        mon_mbx = new();
         exp_mbx = new();
-        g1 = new(drv_mbx, exp_mbx);
+        g1 = new(drive_mbx, exp_mbx);
         d1 = new(vif, drive_mbx);
         m1 = new(vif, act_mbx);
         s1 = new(exp_mbx, act_mbx);
