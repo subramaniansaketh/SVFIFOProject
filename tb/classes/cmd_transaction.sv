@@ -1,8 +1,17 @@
-class cmd_transaction #(int WIDTH = 8);
+class cmd_transaction extends uvm_sequence_item;
+    localparam WIDTH = 8;
+
     // What goes into the DUT
     rand logic [3:0] opcode;
     rand logic [WIDTH - 1: 0] a;
     rand logic [WIDTH - 1: 0] b;
+
+    `uvm_object_utils_begin(cmd_transaction)
+        `uvm_field_int(opcode, UVM_ALL_ON)
+        `uvm_field_int(a, UVM_ALL_ON)
+        `uvm_field_int(b, UVM_ALL_ON)
+    `uvm_object_utils_end
+
     // Outputs
     logic [WIDTH - 1: 0] exp_result;
     logic exp_carry_out;
@@ -16,7 +25,8 @@ class cmd_transaction #(int WIDTH = 8);
         b dist {0:=20, {[1:(2**WIDTH)-2]}:=60, (2**WIDTH)-1:=20};
     }
 
-    function new();
+    function new (string name = "cmd_transaction");
+        super.new(name);
         this.opcode = 0;
         this.a = 0;
         this.b = 0;
@@ -25,7 +35,7 @@ class cmd_transaction #(int WIDTH = 8);
         this.exp_zero = 0;
         this.exp_negative = 0;
         this.exp_cmp_out = 0;
-    endfunction
+    endfunction : new
 
     function void compute_expected();
         this.exp_result = 0;
