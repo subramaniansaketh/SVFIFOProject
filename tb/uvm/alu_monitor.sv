@@ -11,7 +11,7 @@ class alu_monitor extends uvm_monitor;
 
     virtual function void build_phase (uvm_phase phase);
         super.build_phase(phase);
-        mon_analysis_port = new("mon_analysis_port", this);
+        mon_analysis_port = uvm_analysis_port #(cmd_transaction)::type_id::create("mon_analysis_port", this);
         // comment placeholder for uvm_config_db::get() to retrieve virtual interface
     endfunction
 
